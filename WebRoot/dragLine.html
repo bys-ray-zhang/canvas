@@ -24,6 +24,9 @@
         height: height
     });
     var layer = new Konva.Layer();
+    layer.canvas._canvas.id="mycanvas";
+    
+   // debugger;
     // complex dashed and dotted line
     var blueLine = new Konva.Line({
         y: 50,
@@ -41,7 +44,7 @@
         draggable: true
     });
     layer.add(blueLine);
-    stage.add(layer);
+    //stage.add(layer);
     
     //layer = new Konva.Layer();
     var rectX = stage.getWidth() / 2 - 50;
@@ -66,7 +69,54 @@
     layer.add(box);
     stage.add(layer);
     
+    /*
+    var started = false;
+    var tempContext = layer.canvas.context;
+    var canvas = document.getElementById("mycanvas");
+    canvas.addEventListener("mousedown", doMouseDown, false);
+	canvas.addEventListener('mousemove', doMouseMove, false);
+	canvas.addEventListener('mouseup',   doMouseUp, false);
     
+   function doMouseDown(event) {
+			var x = event.pageX;
+			var y = event.pageY;
+			var canvas = event.target;
+			var loc = getPointOnCanvas(canvas, x, y);
+			console.log("mouse down at point( x:" + loc.x + ", y:" + loc.y + ")");
+			tempContext.beginPath();
+			tempContext.moveTo(loc.x, loc.y);
+			started = true;
+//   			event.preventdefault();
+		}
+		
+		function doMouseMove(event) {
+			//event.preventdefault();
+			var x = event.pageX;
+			var y = event.pageY;
+			var canvas = event.target;
+			var loc = getPointOnCanvas(canvas, x, y);
+			if (started) {
+				tempContext.lineTo(loc.x, loc.y);
+				tempContext.stroke();
+			}
+		}
+		
+		function doMouseUp(event) {
+			//event.preventdefault();
+			console.log("mouse up now");
+		    if (started) {
+		    	doMouseMove(event);
+		        started = false;
+			}
+		}
+    
+    
+    	function getPointOnCanvas(canvas, x, y) {
+			var bbox = canvas.getBoundingClientRect();
+			return { x: x - bbox.left * (canvas.width  / bbox.width),
+					y: y - bbox.top  * (canvas.height / bbox.height)
+					};
+		}*/
 </script>
 </body>
 </html>

@@ -1275,6 +1275,7 @@ var Konva = {};
          * @memberof Konva.Util.prototype
          */
         getRandomColor: function() {
+        	debugger;
             var randColor = (Math.random() * 0xFFFFFF << 0).toString(16);
             while (randColor.length < 6) {
                 randColor = ZERO + randColor;
@@ -8329,6 +8330,7 @@ var Konva = {};
 
             bufferHitCanvas.getContext().clear();
             this.drawScene(bufferHitCanvas);
+            debugger;
             p = bufferHitCanvas.context.getImageData(Math.round(point.x), Math.round(point.y), 1, 1).data;
             return p[3] > 0;
         },
@@ -10161,6 +10163,7 @@ var Konva = {};
         },
         _mousemove: function(evt) {
         
+        	//debugger;
             // workaround for mobile IE to force touch event when unhandled pointer event elevates into a mouse event
             if (Konva.UA.ieMobile) {
                 return this._touchmove(evt);
@@ -10227,6 +10230,7 @@ var Konva = {};
             
             if (!Konva.UA.mobile) {
                 this._setPointerPosition(evt);
+                debugger;
                 var shape = this.getIntersection(this.getPointerPosition());
 
                 Konva.listenClickTap = true;
@@ -10237,6 +10241,7 @@ var Konva = {};
                 }
 
                 // content event
+              //  debugger;
                 this._fire(CONTENT_MOUSEDOWN, {evt: evt});
             }
 
@@ -10850,6 +10855,7 @@ var Konva = {};
             ];
         },
         _getIntersection: function(pos) {
+        	//debugger;
             var ratio = this.hitCanvas.pixelRatio;
             var p = this.hitCanvas.context.getImageData(Math.round(pos.x * ratio), Math.round(pos.y * ratio), 1, 1).data,
                 p3 = p[3],
