@@ -25,10 +25,10 @@
     });
     var layer = new Konva.Layer();
     layer.canvas._canvas.id="mycanvas";
-    
-   // debugger;
+    alert(11);
+   debugger;
     // complex dashed and dotted line
-    var blueLine = new Konva.Line({
+    var redLine = new Konva.Line({
         y: 50,
         points: [10, 50, 60, 50, 150, 80, 250, 20, 300, 60],
         stroke: 'red',
@@ -43,7 +43,27 @@
        // dash: [29, 20, 0.001, 20],
         draggable: true
     });
+    debugger;
+    layer.add(redLine);
+    
+    
+        var blueLine = new Konva.Line({
+        y: 50,
+        points: [250, 100, 300, 160],
+        stroke: 'blue',
+        strokeWidth: 3,
+        lineCap: 'round',
+        lineJoin: 'round',
+        /*
+        * line segments with a length of 29px with a gap
+        * of 20px followed by a line segment of 0.001px (a dot)
+        * followed by a gap of 20px
+        */
+       // dash: [29, 20, 0.001, 20],
+        draggable: true
+    });
     layer.add(blueLine);
+    
     //stage.add(layer);
     
     //layer = new Konva.Layer();

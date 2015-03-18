@@ -13,10 +13,11 @@
   
   <body>
  <div id="my_painter">  
-        <canvas id="event_canvas" tabindex="0"></canvas>  
+        <canvas id="event_canvas" tabindex="0" style="background-color: transparent;"></canvas>  
     </div>
     
   </body>
+  <script src="script/konva.js"></script>
   	<script>
     	/* var myCanvas = document.getElementById("myCanvas");
     	var context =  myCanvas.getContext("2d");
@@ -54,6 +55,9 @@
 			x = canvas.width/2;
 			y = canvas.height/2;
 			tempContext.fillRect(x, y, 80, 40);
+			
+			tempContext.strokeStyle="red";
+			tempContext.lineWidth = 3;
 	
 	        // key event - use DOM element as object
 	        canvas.addEventListener('keydown', doKeyDown, true);
@@ -135,6 +139,18 @@
 			
 			console.log('location....:  ' + tempContext.isPointInPath(x,y));
 			
+			var imgData = tempContext.getImageData(x, y, 1, 1).data;
+			
+			console.log('color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
+			
+			if (imgData[3] == 255)
+			{
+			debugger;
+				console.log('color.............:  '+  Konva.Util._rgbToHex(imgData[0], imgData[1], imgData[2]));
+				//console.log('color.............:  '+  _rgbToHex(imgData[0], imgData[1], imgData[2]));
+				return;			
+			}
+			
 			
 			var canvas = event.target;
 			var loc = getPointOnCanvas(canvas, x, y);
@@ -148,18 +164,68 @@
 			var x = event.pageX;
 			var y = event.pageY;
 			var canvas = event.target;
+			
+			var imgData = tempContext.getImageData(x, y, 1, 1).data;
+			if (imgData[3] == 255 && imgData[0] != 255)
+				console.log('x:  '+ x + 'y:  '+  y +  'color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
+			//else
+				//console.log('color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
+			
 			var loc = getPointOnCanvas(canvas, x, y);
 			if (started) {
+			
+				
+				
+//				var imgData = tempContext.getImageData(x, y, 1, 1).data;
+			//if (imgData[3] == 255)
+				//console.log('x:  '+ x + 'y:  '+  y +  'color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
+
+				
+				
 				tempContext.lineTo(loc.x, loc.y);
 				tempContext.stroke();
+				var imagedata1 = tempContext.createImageData(10, 10);
+				for (var i=0;i<imagedata1.data.length;i+=4)
+				{
+				  imagedata1.data[i+0]=20;
+ 				  imagedata1.data[i+1]=247;
+				  imagedata1.data[i+2]=239;
+				  imagedata1.data[i+3]=255;
+				}
+				
+				
+				//imagedata1.data[0] = 102;
+				//imagedata1.data[1] = 105;
+				//imagedata1.data[2] = 247;
+				//imagedata1.data[3] = 255;
+				//console.log('loc.x:  '+ loc.x + 'loc.y:  '+  loc.y );
+				tempContext.putImageData(imagedata1, loc.x, loc.y);
 			}
 		}
 		
+		
+		function _rgbToHex(r, g, b) {
+            return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+		
+		function getRandomColor() {
+        	//debugger;
+            var randColor = (Math.random() * 0xFFFFFF << 0).toString(16);
+            while (randColor.length < 6) {
+                randColor = ZERO + randColor;
+            }
+            return "#" + randColor;
+        }
+		
 		function doMouseUp(event) {
-			console.log("mouse up now");
+			//console.log("mouse up now");
 		    if (started) {
 		    	doMouseMove(event);
 		        started = false;
+		        
+		       // tempContext.
+		        
+		       // console.log(Konva.Util.getRandomColor());
 			}
 		}
 		

@@ -1258,6 +1258,8 @@ var Konva = {};
             ].join(EMPTY_STRING);
         },
         _rgbToHex: function(r, g, b) {
+        	console.log('r:  '+r + 'g:  '+g + '  b: '+b);
+        	
             return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
         },
         _hexToRgb: function(hex) {
@@ -1275,7 +1277,7 @@ var Konva = {};
          * @memberof Konva.Util.prototype
          */
         getRandomColor: function() {
-        	debugger;
+        	//debugger;
             var randColor = (Math.random() * 0xFFFFFF << 0).toString(16);
             while (randColor.length < 6) {
                 randColor = ZERO + randColor;
@@ -1307,6 +1309,9 @@ var Konva = {};
          * var rgb = Konva.Util.getRGB('rgb(0,0,255)');
          */
         getRGB: function(color) {
+        	
+        	console.log('color:  '+color);
+        	
             var rgb;
             // color string
             if (color in COLORS) {
@@ -1342,6 +1347,9 @@ var Konva = {};
         // convert any color string to RGBA object
         // from https://github.com/component/color-parser
         colorToRGBA : function(str) {
+        	
+        	console.log('colorto:  '+str);
+        	
             str = str || 'black';
             return Konva.Util._namedColorToRBA(str)
                 || Konva.Util._hex3ColorToRGBA(str)
@@ -1702,10 +1710,11 @@ var Konva = {};
     };
 
     Konva.SceneCanvas = function(config) {
+    
+   	
         var conf = config || {};
         var width = conf.width || 0,
             height = conf.height || 0;
-
         Konva.Canvas.call(this, conf);
         this.context = new Konva.SceneContext(this);
         this.setSize(width, height);
@@ -1808,6 +1817,7 @@ var Konva = {};
          * @param {Konva.Shape} shape
          */
         strokeShape: function(shape) {
+        	console.log('strokeShape....');
             if(shape.getStrokeEnabled()) {
                 this._stroke(shape);
             }
@@ -1977,6 +1987,7 @@ var Konva = {};
             this._context.closePath();
         },
         createImageData: function() {
+        	console.log('createImageData...........');
             var a = arguments;
             if(a.length === 2) {
                 return this._context.createImageData(a[0], a[1]);
@@ -1998,6 +2009,7 @@ var Konva = {};
             return this._context.createRadialGradient(a[0], a[1], a[2], a[3], a[4], a[5]);
         },
         drawImage: function() {
+        	console.log('drawImage...........');
             var a = arguments,
                 _context = this._context;
 
@@ -2024,6 +2036,8 @@ var Konva = {};
         },
         lineTo: function() {
             var a = arguments;
+            console.log('lineTo...........');
+            debugger;
             this._context.lineTo(a[0], a[1]);
         },
         moveTo: function() {
@@ -2035,6 +2049,7 @@ var Konva = {};
             this._context.rect(a[0], a[1], a[2], a[3]);
         },
         putImageData: function() {
+        	console.log('putImageData...........');
             var a = arguments;
             this._context.putImageData(a[0], a[1], a[2]);
         },
@@ -2043,6 +2058,11 @@ var Konva = {};
             this._context.quadraticCurveTo(a[0], a[1], a[2], a[3]);
         },
         restore: function() {
+        	
+        	debugger;
+        	
+        	//_context.
+        	
             this._context.restore();
         },
         rotate: function() {
@@ -2057,6 +2077,7 @@ var Konva = {};
             this._context.scale(a[0], a[1]);
         },
         setLineDash: function() {
+        	
             var a = arguments,
                 _context = this._context;
 
@@ -2095,6 +2116,7 @@ var Konva = {};
             this._context.translate(a[0], a[1]);
         },
         _enableTrace: function() {
+        	
             var that = this,
                 len = CONTEXT_METHODS.length,
                 _simplifyArray = Konva.Util._simplifyArray,
@@ -2144,6 +2166,7 @@ var Konva = {};
 
     Konva.SceneContext.prototype = {
         _fillColor: function(shape) {
+        	
             var fill = shape.fill()
                 || Konva.Util._getRGBAString({
                     red: shape.fillRed(),
@@ -2156,6 +2179,7 @@ var Konva = {};
             shape._fillFunc(this);
         },
         _fillPattern: function(shape) {
+        	
             var fillPatternImage = shape.getFillPatternImage(),
                 fillPatternX = shape.getFillPatternX(),
                 fillPatternY = shape.getFillPatternY(),
@@ -2196,6 +2220,7 @@ var Konva = {};
             }
         },
         _fillRadialGradient: function(shape) {
+        	
             var start = shape.getFillRadialGradientStartPoint(),
                 end = shape.getFillRadialGradientEndPoint(),
                 startRadius = shape.getFillRadialGradientStartRadius(),
@@ -2211,12 +2236,13 @@ var Konva = {};
             this.fill();
         },
         _fill: function(shape) {
+        	
             var hasColor = shape.fill() || shape.fillRed() || shape.fillGreen() || shape.fillBlue(),
                 hasPattern = shape.getFillPatternImage(),
                 hasLinearGradient = shape.getFillLinearGradientColorStops(),
                 hasRadialGradient = shape.getFillRadialGradientColorStops(),
                 fillPriority = shape.getFillPriority();
-
+            
             // priority fills
             if(hasColor && fillPriority === 'color') {
                 this._fillColor(shape);
@@ -2245,6 +2271,7 @@ var Konva = {};
             }
         },
         _stroke: function(shape) {
+        	debugger;
             var dash = shape.dash(),
                 // ignore strokeScaleEnabled for Text
                 strokeScaleEnabled = (shape.getStrokeScaleEnabled() || (shape instanceof Konva.Text));
@@ -2269,6 +2296,7 @@ var Konva = {};
                         alpha: shape.strokeAlpha()
                     }));
                 if (!shape.getShadowForStrokeEnabled()) {
+                	console.log('2222222222222222222');
                     this.setAttr('shadowColor', 'rgba(0,0,0,0)');
                 }
                 shape._strokeFunc(this);
@@ -2688,6 +2716,7 @@ var Konva = {};
                 y : y
             };
 
+            console.log('222222222222222');
             return this;
         },
         /**
@@ -2747,6 +2776,7 @@ var Konva = {};
                 maxX = Math.max(maxX, transformed.x);
                 maxY = Math.max(maxY, transformed.y);
             });
+            console.log('222222222222222');
             return {
                 x : Math.round(minX),
                 y : Math.round(minY),
@@ -2765,6 +2795,8 @@ var Konva = {};
             var cacheCanvas = this._getCachedSceneCanvas();
             var ratio = context.canvas.pixelRatio;
 
+            
+            console.log('222222222222222');
             context.drawImage(cacheCanvas._canvas, 0, 0, cacheCanvas.width / ratio, cacheCanvas.height /ratio);
             context.restore();
         },
@@ -2800,6 +2832,7 @@ var Konva = {};
                         for (n=0; n<len; n++) {
                             filter = filters[n];
                             filter.call(this, imageData);
+                            console.log('555555555555555555555');
                             filterContext.putImageData(imageData, 0, 0);
                         }
                     }
@@ -7786,6 +7819,7 @@ var Konva = {};
          * layer.add(shape1, shape2, shape3);
          */
         add: function(child) {
+        	debugger;
             if (arguments.length > 1) {
                 for (var i = 0; i < arguments.length; i++) {
                     this.add(arguments[i]);
@@ -8551,6 +8585,9 @@ var Konva = {};
         * shape.drawHitFromCache();
         */
         drawHitFromCache: function(alphaThreshold) {
+        	
+        	console.log('11111111111111');
+        	
             var threshold = alphaThreshold || 0,
                 cachedCanvas = this._cache.canvas,
                 sceneCanvas = this._getCachedSceneCanvas(),
@@ -8582,6 +8619,8 @@ var Konva = {};
                     }
                 }
 
+                //debugger;
+                
                 hitContext.putImageData(hitImageData, 0, 0);
             }
             catch(e) {
@@ -10230,7 +10269,8 @@ var Konva = {};
             
             if (!Konva.UA.mobile) {
                 this._setPointerPosition(evt);
-                debugger;
+                //debugger;
+                
                 var shape = this.getIntersection(this.getPointerPosition());
 
                 Konva.listenClickTap = true;
