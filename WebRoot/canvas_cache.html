@@ -37,35 +37,12 @@
 		var started = false;
 		var mText_canvas = null;
 		var x = 0, y =0;
-		var backendContext = null;
 		window.add
 		window.onload = function() {
 			var canvas = document.getElementById("event_canvas");
 			console.log(canvas.parentNode.clientWidth);
 			canvas.width = canvas.parentNode.clientWidth;
 			canvas.height = canvas.parentNode.clientHeight;
-
-			//backend canvas;
-			 var backend = document.createElement("canvas");
-			  backend.width = canvas.width;
-			  backend.height = canvas.height;
-			  backendContext = backend.getContext("2d");
-			  backendContext.fillStyle = "#000000";
-			  backendContext.fillRect(0, 0, backend.width, backend.height);
-			  var imageObj = backendContext.getImageData( 0, 0, canvas.width, canvas.height);
-			  //var imageData = imageObj.data;
-			  /* for (var i=0;i<imageObj.length;i+=4)
-				{
-				  imageObj.data[i+0]=20;
-				  imageObj.data[i+1]=247;
-				  imageObj.data[i+2]=239;
-				  imageObj.data[i+3]=255;
-				} */
-
-			 backendContext.putImageData(imageObj, 0, 0);
-			  backendContext.strokeStyle="red";
-			  backendContext.lineWidth = 3;
-			  
 			
 			if (!canvas.getContext) {
 			    console.log("Canvas not supported. Please install a HTML5 compatible browser.");
@@ -92,8 +69,6 @@
 	        canvas.addEventListener("mousedown", doMouseDown, false);
 	        canvas.addEventListener('mousemove', doMouseMove, false);
 	        canvas.addEventListener('mouseup',   doMouseUp, false);
-
-	        
 	        
 	        canvas.ontouchstart = function(){
 	        	//alert('ontouchstart');
@@ -170,7 +145,7 @@
 			
 			if (imgData[3] == 255)
 			{
-			//debugger;
+			debugger;
 				console.log('color.............:  '+  Konva.Util._rgbToHex(imgData[0], imgData[1], imgData[2]));
 				//console.log('color.............:  '+  _rgbToHex(imgData[0], imgData[1], imgData[2]));
 				return;			
@@ -182,26 +157,7 @@
 			console.log("mouse down at point( x:" + loc.x + ", y:" + loc.y + ")");
 			tempContext.beginPath();
 			tempContext.moveTo(loc.x, loc.y);
-
-			backendContext.beginPath();
-			backendContext.moveTo(loc.x, loc.y);
-			backendContext.strokeStyle="#1223ff";
-			
 			started = true;
-		}
-
-
-		function doMouseMove2(event) {
-
-			alert(222);
-			
-			var x = event.pageX;
-			var y = event.pageY;
-			var canvas = event.target;
-			
-			var imgData = backendContext.getImageData(x, y, 1, 1).data;
-			if (imgData[3] == 255 && imgData[0] != 255)
-				console.log('x:  '+ x + 'y:  '+  y +  'color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
 		}
 		
 		function doMouseMove(event) {
@@ -209,13 +165,11 @@
 			var y = event.pageY;
 			var canvas = event.target;
 			
-			var imgData = backendContext.getImageData(x, y, 1, 1).data;
-			//if (imgData[3] == 255 && imgData[0] != 255)
-				//console.log('x:  '+ x + 'y:  '+  y +  'color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
+			var imgData = tempContext.getImageData(x, y, 1, 1).data;
+			if (imgData[3] == 255 && imgData[0] != 255)
+				console.log('x:  '+ x + 'y:  '+  y +  'color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
 			//else
-			
-				console.log(_rgbToHex(imgData[0], imgData[1], imgData[2]));
-				console.log('color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
+				//console.log('color.............:  R:  '+  imgData[0] + ', G:  ' + imgData[1] + ' b:  ' + imgData[2]+ ' a:  ' + imgData[3]);
 			
 			var loc = getPointOnCanvas(canvas, x, y);
 			if (started) {
@@ -230,13 +184,7 @@
 				
 				tempContext.lineTo(loc.x, loc.y);
 				tempContext.stroke();
-
-				
-				backendContext.lineTo(loc.x, loc.y);
-				backendContext.stroke();
-
-				
-				/* var imagedata1 = tempContext.createImageData(10, 10);
+				var imagedata1 = tempContext.createImageData(10, 10);
 				for (var i=0;i<imagedata1.data.length;i+=4)
 				{
 				  imagedata1.data[i+0]=20;
@@ -251,7 +199,7 @@
 				//imagedata1.data[2] = 247;
 				//imagedata1.data[3] = 255;
 				//console.log('loc.x:  '+ loc.x + 'loc.y:  '+  loc.y );
-				tempContext.putImageData(imagedata1, loc.x, loc.y); */
+				tempContext.putImageData(imagedata1, loc.x, loc.y);
 			}
 		}
 		

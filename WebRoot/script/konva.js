@@ -1162,6 +1162,7 @@ var Konva = {};
             return names.length > 0;
         },
         createCanvasElement: function() {
+        	debugger;
             var canvas = Konva.document.createElement('canvas');
             // on some environments canvas.style is readonly
             try {
